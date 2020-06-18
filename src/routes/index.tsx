@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '../pages/Home';
-import Hero from '../pages/Hero';
+import Character from '../pages/Character';
 
 const AppStack = createStackNavigator();
 
@@ -15,7 +15,7 @@ const Routes: React.FC = () => (
         component={Home}
         options={{ cardStyle: { backgroundColor: '#f8f8f8' } }}
       />
-      <AppStack.Screen name="Hero" component={Hero} />
+      <AppStack.Screen name="Character" component={Character} />
     </AppStack.Navigator>
   </NavigationContainer>
 );

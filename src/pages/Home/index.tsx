@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StatusBar, TouchableOpacity, ScrollView } from 'react-native';
-import * as ImageManipulator from '@pontusab/react-native-image-manipulator';
+import { useNavigation } from '@react-navigation/native';
 
 import api from '../../services/api';
 
@@ -32,6 +32,7 @@ import {
   CharacterContainer,
   CharacterImageContainer,
   CharacterImage,
+  CharacterInfo,
   CharacterName,
   CharacterAlterEgo,
 } from './styles';
@@ -43,6 +44,11 @@ export interface Character {
   imageQ: string;
 }
 
+interface NavigateProps {
+  route: string;
+  character_name: string;
+}
+
 const Home: React.FC = () => {
   const [heroes, setHeroes] = useState<Character[]>([]);
   const [villains, setVillains] = useState<Character[]>([]);
@@ -50,27 +56,7 @@ const Home: React.FC = () => {
   const [aliens, setAliens] = useState<Character[]>([]);
   const [humans, setHumans] = useState<Character[]>([]);
 
-  // useEffect(() => {
-  //   async function resizeImage(imageUri: string): Promise<string> {
-  //     const response = await ImageManipulator.manipulateAsync(imageUri, [
-  //       { resize: { width: 140, height: 230 } },
-  //     ]);
-  //     return response.uri;
-  //   }
-
-  //   async function laodHeroes(): Promise<void> {
-  //     const response = await api.get<Character[]>('heroes');
-
-  //     const promises = response.data.map(async character => ({
-  //       ...character,
-  //       imageQ: await resizeImage(character.imagePath),
-  //     }));
-
-  //     await Promise.all(promises).then(data => setHeroes(data));
-  //   }
-
-  //   laodHeroes();
-  // }, []);
+  const { navigate } = useNavigation();
 
   useEffect(() => {
     api.get('heroes').then(response => {
@@ -94,6 +80,13 @@ const Home: React.FC = () => {
     });
   }, []);
 
+  const navigateToCharacterPage = useCallback(
+    ({ route, character_name }: NavigateProps) => {
+      navigate('Character', { route, character_name });
+    },
+    [navigate],
+  );
+
   return (
     <Container>
       <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
@@ -108,21 +101,31 @@ const Home: React.FC = () => {
         <HomeTitle>Escolha o seu personagem</HomeTitle>
 
         <CharacterCategories>
-          <HeroCategory>
-            <HeroIcon width={32} height={32} color="#fff" />
-          </HeroCategory>
-          <VillainCategory>
-            <VillainIcon width={32} height={32} color="#fff" />
-          </VillainCategory>
-          <AntiheroCategory>
-            <AntiheroIcon width={32} height={32} color="#fff" />
-          </AntiheroCategory>
-          <AlienCategory>
-            <AlienIcon width={32} height={32} color="#fff" />
-          </AlienCategory>
-          <HumanCategory>
-            <HumanIcon width={32} height={32} color="#fff" />
-          </HumanCategory>
+          <TouchableOpacity onPress={() => {}}>
+            <HeroCategory>
+              <HeroIcon width={32} height={32} color="#fff" />
+            </HeroCategory>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <VillainCategory>
+              <VillainIcon width={32} height={32} color="#fff" />
+            </VillainCategory>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <AntiheroCategory>
+              <AntiheroIcon width={32} height={32} color="#fff" />
+            </AntiheroCategory>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <AlienCategory>
+              <AlienIcon width={32} height={32} color="#fff" />
+            </AlienCategory>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <HumanCategory>
+              <HumanIcon width={32} height={32} color="#fff" />
+            </HumanCategory>
+          </TouchableOpacity>
         </CharacterCategories>
 
         <CharactersListHeader>
@@ -139,14 +142,23 @@ const Home: React.FC = () => {
           keyExtractor={hero => hero.name}
           renderItem={({ item: hero }) => (
             <CharacterContainer>
-              <CharacterImageContainer>
+              <CharacterImageContainer
+                onPress={() =>
+                  navigateToCharacterPage({
+                    route: 'heroes',
+                    character_name: hero.name,
+                  })
+                }
+              >
                 <CharacterImage
                   source={{ uri: hero.imagePath }}
-                  style={{ borderRadius: 16 }}
+                  imageStyle={{ borderRadius: 16 }}
                 />
               </CharacterImageContainer>
-              <CharacterAlterEgo>{hero.alterEgo}</CharacterAlterEgo>
-              <CharacterName>{hero.name}</CharacterName>
+              <CharacterInfo>
+                <CharacterAlterEgo>{hero.alterEgo}</CharacterAlterEgo>
+                <CharacterName>{hero.name}</CharacterName>
+              </CharacterInfo>
             </CharacterContainer>
           )}
         />
@@ -165,14 +177,23 @@ const Home: React.FC = () => {
           keyExtractor={villain => villain.name}
           renderItem={({ item: villain }) => (
             <CharacterContainer>
-              <CharacterImageContainer>
+              <CharacterImageContainer
+                onPress={() =>
+                  navigateToCharacterPage({
+                    route: 'villains',
+                    character_name: villain.name,
+                  })
+                }
+              >
                 <CharacterImage
                   source={{ uri: villain.imagePath }}
-                  style={{ borderRadius: 16 }}
+                  imageStyle={{ borderRadius: 16 }}
                 />
               </CharacterImageContainer>
-              <CharacterAlterEgo>{villain.alterEgo}</CharacterAlterEgo>
-              <CharacterName>{villain.name}</CharacterName>
+              <CharacterInfo>
+                <CharacterAlterEgo>{villain.alterEgo}</CharacterAlterEgo>
+                <CharacterName>{villain.name}</CharacterName>
+              </CharacterInfo>
             </CharacterContainer>
           )}
         />
@@ -191,14 +212,23 @@ const Home: React.FC = () => {
           keyExtractor={antiHero => antiHero.name}
           renderItem={({ item: antiHero }) => (
             <CharacterContainer>
-              <CharacterImageContainer>
+              <CharacterImageContainer
+                onPress={() =>
+                  navigateToCharacterPage({
+                    route: 'antiHeroes',
+                    character_name: antiHero.name,
+                  })
+                }
+              >
                 <CharacterImage
                   source={{ uri: antiHero.imagePath }}
-                  style={{ borderRadius: 16 }}
+                  imageStyle={{ borderRadius: 16 }}
                 />
               </CharacterImageContainer>
-              <CharacterAlterEgo>{antiHero.alterEgo}</CharacterAlterEgo>
-              <CharacterName>{antiHero.name}</CharacterName>
+              <CharacterInfo>
+                <CharacterAlterEgo>{antiHero.alterEgo}</CharacterAlterEgo>
+                <CharacterName>{antiHero.name}</CharacterName>
+              </CharacterInfo>
             </CharacterContainer>
           )}
         />
@@ -217,14 +247,23 @@ const Home: React.FC = () => {
           keyExtractor={alien => alien.name}
           renderItem={({ item: alien }) => (
             <CharacterContainer>
-              <CharacterImageContainer>
+              <CharacterImageContainer
+                onPress={() =>
+                  navigateToCharacterPage({
+                    route: 'aliens',
+                    character_name: alien.name,
+                  })
+                }
+              >
                 <CharacterImage
                   source={{ uri: alien.imagePath }}
-                  style={{ borderRadius: 16 }}
+                  imageStyle={{ borderRadius: 16 }}
                 />
               </CharacterImageContainer>
-              <CharacterAlterEgo>{alien.alterEgo}</CharacterAlterEgo>
-              <CharacterName>{alien.name}</CharacterName>
+              <CharacterInfo>
+                <CharacterAlterEgo>{alien.alterEgo}</CharacterAlterEgo>
+                <CharacterName>{alien.name}</CharacterName>
+              </CharacterInfo>
             </CharacterContainer>
           )}
         />
@@ -243,14 +282,23 @@ const Home: React.FC = () => {
           keyExtractor={human => human.name}
           renderItem={({ item: human }) => (
             <CharacterContainer>
-              <CharacterImageContainer>
+              <CharacterImageContainer
+                onPress={() =>
+                  navigateToCharacterPage({
+                    route: 'humans',
+                    character_name: human.name,
+                  })
+                }
+              >
                 <CharacterImage
                   source={{ uri: human.imagePath }}
-                  style={{ borderRadius: 16 }}
+                  imageStyle={{ borderRadius: 16 }}
                 />
               </CharacterImageContainer>
-              <CharacterAlterEgo>{human.alterEgo}</CharacterAlterEgo>
-              <CharacterName>{human.name}</CharacterName>
+              <CharacterInfo>
+                <CharacterAlterEgo>{human.alterEgo}</CharacterAlterEgo>
+                <CharacterName>{human.name}</CharacterName>
+              </CharacterInfo>
             </CharacterContainer>
           )}
         />
