@@ -105,7 +105,9 @@ const Character: React.FC = () => {
         setMovies(response.data[0].movies);
       });
 
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, [routeParams.route, routeParams.character_name]);
 
   function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>): void {
