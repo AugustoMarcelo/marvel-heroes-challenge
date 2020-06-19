@@ -14,7 +14,6 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
-    "add": "^2.0.6",
     "axios": "^0.19.2",
     "json-server": "^0.16.1",
     "react": "16.11.0",
@@ -26,8 +25,7 @@
     "react-native-screens": "^2.8.0",
     "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
-    "styled-components": "^5.1.1",
-    "yarn": "^1.22.4"
+    "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
