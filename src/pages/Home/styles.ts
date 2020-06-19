@@ -138,17 +138,10 @@ export const CharacterName = styled.Text`
   font-size: 20px;
   font-family: 'gilroy-heavy';
   color: #fff;
-  /* position: absolute;
-  bottom: 15px;
-  left: 15px;
-  width: 90px; */
 `;
 
 export const CharacterAlterEgo = styled.Text`
   font-size: 10px;
   font-family: 'gilroy-medium';
   color: #fff;
-  /* position: absolute;
-  bottom: 60px;
-  left: 15px; */
 `;
